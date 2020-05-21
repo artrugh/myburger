@@ -1,42 +1,41 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 import axios from './../../axios-orders'
 import withErrorHandler from './../../hoc/withErrorHandler/withErrorHandler'
 
 import Order from './../../components/Order/Order'
+import Spinner from './../../components/UI/Spinner/Spinner'
 
-export default withErrorHandler(class Orders extends Component {
+import * as actions from './../../store/actions/'
 
-    state = {
-        orders: [],
-        loading: true
-    }
-    componentDidMount() {
-        axios.get('/orders.json')
-            .then(res => {
 
-                const fetchedOrders = [];
-                for (let key in res.data) {
+const mapStateToProps = state => ({
+    orders: state.order.orders,
+    loading: state.order.loading,
+    token: state.auth.token,
+    userId: state.auth.userId
+})
 
-                    fetchedOrders.push({
-                        ...res.data[key],
-                        id: key
-                    })
-                }
+const mapDispatchToProps = dispatch => ({
+    onFetchOrders: (token, userId) => dispatch(actions.fetchOrders(token, userId))
+})
 
-                this.setState({ orders: res.data, orders: fetchedOrders })
-            })
-            .catch(err => this.setState({ loading: false }))
-    }
-    render() {
-        return (
-            <div>
-                {this.state.orders.map(order =>
+export default connect(mapStateToProps, mapDispatchToProps)
+    (withErrorHandler(class Orders extends Component {
+
+        componentDidMount() {
+            this.props.onFetchOrders(this.props.token, this.props.userId)
+        }
+        render() {
+            let orders = <Spinner />
+            if (!this.props.loading) orders =
+                this.props.orders.map(order =>
                     <Order
                         key={order.id}
                         ingredients={order.ingredients}
-                        price={+ order.price} />)}
-            </div>
-        )
-    }
-}, axios)
+                        price={+ order.price} />)
+
+            return <div>{orders}</div>
+        }
+    }, axios))

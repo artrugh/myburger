@@ -12,6 +12,7 @@ export default function burger(props) {
                 .map((_, i) => <BurgerIngredient key={igKey + i} type={igKey} />))
             .reduce((arr, el) => arr.concat(el), [])
 
+
     if (transformedIngredients.length === 0) {
         transformedIngredients = <p>Please start adding ingredients!</p>
     }

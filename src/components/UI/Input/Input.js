@@ -17,12 +17,12 @@ export default function Input(props) {
                 className={inputClasses.join(' ')}
                 {...props.elementConfig}
                 value={props.value}
+                autoComplete = {props.elementConfig.autoComplete}
                 onChange={props.changed} />;
             break;
         case ('textarea'):
             inputElement = <textarea
                 className={inputClasses.join(' ')}
-                onChange={props.changed}
                 {...props.elementConfig}
                 value={props.value}
                 onChange={props.changed} />;
