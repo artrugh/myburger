@@ -42,11 +42,15 @@ sagaMiddleware.run(watchAuth)
 sagaMiddleware.run(watchBurgerBuilder)
 sagaMiddleware.run(watchOrders)
 
-ReactDOM.render(
+const app = (
   <Provider store={store}>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </Provider>,
+  </Provider>
+)
+
+ReactDOM.render(
+  app,
   document.getElementById('root')
 );

@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import axios from './../../axios-orders'
 import withErrorHandler from './../../hoc/withErrorHandler/withErrorHandler'
@@ -9,33 +9,28 @@ import Spinner from './../../components/UI/Spinner/Spinner'
 
 import * as actions from './../../store/actions/'
 
+export default withErrorHandler(function Orders() {
 
-const mapStateToProps = state => ({
-    orders: state.order.orders,
-    loading: state.order.loading,
-    token: state.auth.token,
-    userId: state.auth.userId
-})
+        const orders = useSelector(state => state.order.orders)
+        const loading = useSelector(state => state.order.loading)
+        const token = useSelector(state => state.auth.token)
+        const userId = useSelector(state => state.auth.userId)
 
-const mapDispatchToProps = dispatch => ({
-    onFetchOrders: (token, userId) => dispatch(actions.fetchOrders(token, userId))
-})
+        const dispatch = useDispatch();
+        const onFetchOrders = useCallback((token, userId) => dispatch(actions.fetchOrders(token, userId)), [dispatch])
 
-export default connect(mapStateToProps, mapDispatchToProps)
-    (withErrorHandler(class Orders extends Component {
+        useEffect(() => {
+            onFetchOrders(token, userId)
+        }, [onFetchOrders, token, userId])
 
-        componentDidMount() {
-            this.props.onFetchOrders(this.props.token, this.props.userId)
-        }
-        render() {
-            let orders = <Spinner />
-            if (!this.props.loading) orders =
-                this.props.orders.map(order =>
-                    <Order
-                        key={order.id}
-                        ingredients={order.ingredients}
-                        price={+ order.price} />)
+        let orderList = <Spinner />
+        if (!loading) orderList =
+            orders.map(order =>
+                <Order
+                    key={order.id}
+                    ingredients={order.ingredients}
+                    price={+ order.price} />)
 
-            return <div>{orders}</div>
-        }
-    }, axios))
+        return <div>{orderList}</div>
+
+    }, axios)

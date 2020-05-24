@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import {  useSelector } from 'react-redux';
 
 
 import classes from './Layout.module.css';
@@ -7,41 +7,32 @@ import classes from './Layout.module.css';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar'
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer'
 
-class Layout extends Component {
+const Layout = props => {
 
-    state = {
-        showSideDrawer: false
+    const [showSideDrawer, setSideDrawer] = useState(false)
+
+    const isAuth = useSelector(state => state.auth.token !== null)
+    const sideDrawerCloseHandler = () => {
+        setSideDrawer(false)
     }
-    sideDrawerCloseHandler = () => {
-        this.setState({ showSideDrawer: false })
+    const sideDrawerToggleHandler = () => {
+        setSideDrawer(!showSideDrawer)
     }
-    sideDrawerToggleHandler = () => {
-        this.setState(prevState => { return { showSideDrawer: !prevState.showSideDrawer } })
-    }
+    return (
+        <>
+            <Toolbar
+                isAuth={isAuth}
+                drawerToggleClicked={sideDrawerToggleHandler} />
+            <SideDrawer
+                isAuth={isAuth}
+                opened={showSideDrawer}
+                closed={sideDrawerCloseHandler} />
+            <main className={classes.Content}>
+                {props.children}
+            </main>
+        </>
 
-
-    render() {
-        return (
-            <>
-                <Toolbar 
-                isAuth = {this.props.isAuth}
-                drawerToggleClicked={this.sideDrawerToggleHandler} />
-                <SideDrawer
-                isAuth = {this.props.isAuth}
-                    opened={this.state.showSideDrawer}
-                    closed={this.sideDrawerCloseHandler} />
-                <main className={classes.Content}>
-                    {this.props.children}
-                </main>
-            </>
-
-        );
-
-    }
+    );
 }
 
-
-const mapStateToProps = state => ({
-    isAuth: state.auth.token !== null
-})
-export default connect(mapStateToProps)(Layout);
+export default Layout;

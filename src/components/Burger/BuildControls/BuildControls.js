@@ -10,9 +10,8 @@ const controls = [
     { label: 'Cheese', type: 'cheese' },
     { label: 'Meat', type: 'meat' },
 ]
+
 export default function BuildControls(props) {
-
-
     return (
         <div className={classes.BuildControls}>
             <p>Current Price: <strong>{props.price.toFixed(2)}</strong> </p>
