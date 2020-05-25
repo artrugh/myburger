@@ -4,8 +4,15 @@ import Button from '../../UI/Button/Button'
 
 const OrderSummary = props => {
 
-    const ingredientSummery = Object.keys(props.ingredients)
-        .map(igKey => <li key={igKey}><span style={{ textTransform: 'capitalize' }}>{igKey}</span>: {props.ingredients[igKey]}</li>)
+    const ingredientSummery = Object
+        .keys(props.ingredients)
+        .map(igKey => (
+            <li key={igKey}>
+                <span style={{ textTransform: 'capitalize' }}>
+                    {igKey}
+                </span>: {props.ingredients[igKey]}
+            </li>
+        ))
 
     return (
         <>
@@ -18,13 +25,16 @@ const OrderSummary = props => {
             <p>Continue to checkout? </p>
             <Button
                 btnType="Danger"
-                clicked={props.purchaseCancelled}>CANCEL</Button>
+                clicked={props.purchaseCancelled}>
+                CANCEL
+                    </Button>
             <Button
                 clicked={props.purchaseContinued}
-                btnType="Success">CONTINUE</Button>
+                btnType="Success">
+                CONTINUE
+                    </Button>
         </>
     )
 }
-
 
 export default OrderSummary;

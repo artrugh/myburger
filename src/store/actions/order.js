@@ -11,11 +11,9 @@ export const purchaseBurgerFailed = err => ({
     err: err
 })
 
-
 export const purchaseBurgerStart = () => ({
     type: actionTypes.PURCHASE_BURGER_START
 })
-
 
 export const purchaseBurger = (orderData, token) => ({
     type: actionTypes.PURCHASE_BURGER,

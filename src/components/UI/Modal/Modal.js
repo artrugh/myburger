@@ -1,6 +1,8 @@
 import React, { memo } from 'react'
 
 import classes from './Modal.module.css'
+
+// UI COMPONENT
 import Backdrop from './../Backdrop/Backdrop'
 
 const Modal = props => (
@@ -18,7 +20,7 @@ const Modal = props => (
         </div>
     </>
 )
-
+// RENDERING DEPENDS ON THE CHANGED PROPS
 export default memo(Modal,
     (prevProps, nextProps) => nextProps.show === prevProps.show &&
         nextProps.children === prevProps.children);

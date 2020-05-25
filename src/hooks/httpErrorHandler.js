@@ -19,7 +19,7 @@ export default httpClient => {
     useEffect(() => () => {
         ejectFunction()
     }, [reqInterceptor, resInterceptor, ejectFunction])
-
+    
     const cleanError = () => {
         setError(null)
     }

@@ -1,4 +1,5 @@
 import React from 'react'
+
 import PropTypes from 'prop-types';
 
 import classes from './BurgerIngredient.module.css'
@@ -11,7 +12,6 @@ export default function BurgerIngredient(props) {
         case ('bread-bottom'):
             ingredient = <div className={classes.BreadBottom}></div>
             break;
-
         case ('bread-top'):
             ingredient = (
                 <div className={classes.BreadTop}>
@@ -35,11 +35,10 @@ export default function BurgerIngredient(props) {
         default:
             ingredient = null;
     }
-
     return ingredient;
 }
 
-
+// CHECK PROPERTIES TYPE
 BurgerIngredient.propTypes = {
     type: PropTypes.string.isRequired
 };

@@ -16,6 +16,8 @@ export default withErrorHandler(function Orders() {
         const token = useSelector(state => state.auth.token)
         const userId = useSelector(state => state.auth.userId)
 
+        console.log(loading);
+        
         const dispatch = useDispatch();
         const onFetchOrders = useCallback((token, userId) => dispatch(actions.fetchOrders(token, userId)), [dispatch])
 

@@ -4,6 +4,9 @@ import axios from 'axios';
 import { apiKey } from './../../keys'
 import * as actions from './../actions/index'
 
+// FUNCTIONALITY
+// COMBINE ACTIONS
+
 export function* logoutSaga() {
     yield call([localStorage, 'removeItem'], 'expiration')
     yield call([localStorage, 'removeItem'], 'token')

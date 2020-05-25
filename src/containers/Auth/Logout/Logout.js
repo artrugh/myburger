@@ -1,15 +1,18 @@
 import React, { useEffect, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
+// REACT-REDUX
+import { useDispatch } from 'react-redux';
+// ALL ACTIONS
 import * as actions from './../../../store/actions/index'
 
-export default function Logout(props) {
+export default function () {
+    // DISPATCH ACTIONS
     const dispatch = useDispatch();
     const onLogout = useCallback(() => dispatch(actions.logout()), [dispatch])
-    useEffect(() => {
-        onLogout()
-    }, [onLogout])
+
+    useEffect(() => { onLogout() }, [onLogout])
+    
     return <Redirect to="/" />
 }
 

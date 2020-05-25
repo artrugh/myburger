@@ -1,11 +1,11 @@
 import React from 'react'
-
 import { NavLink } from 'react-router-dom';
 
+// STYLE
 import classes from './NavigationItem.module.css'
 
-export default function NavigationItem(props) {
-
+export default function (props) {
+    
     return (
         <li className={classes.NavigationItem}>
             <NavLink

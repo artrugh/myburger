@@ -1,4 +1,5 @@
 import * as actionTypes from './../actions/actionTypes';
+
 import {
     addIng,
     removeIng,
@@ -27,7 +28,6 @@ const reducer = (state = InitialState, action) => {
 
         default: return state;
     }
-
 }
 
 export default reducer;

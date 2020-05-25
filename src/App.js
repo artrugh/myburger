@@ -1,42 +1,47 @@
-import React, { useEffect, useCallback, lazy, Suspense } from 'react';
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
+import React, {
+  useEffect,
+  useCallback,
+  lazy,
+  Suspense
+} from 'react';
+
+import {
+  Route,
+  Switch,
+  Redirect,
+  withRouter
+} from 'react-router-dom'
+
 import { useSelector, useDispatch } from 'react-redux'
 
-// actions
+// ALL ACTIONS
 import * as actions from './store/actions/index'
 
-//components
+// STATIC CONTAINERS
 import Layout from './hoc/Layout/Layout'
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder'
 import Logout from './containers/Auth/Logout/Logout'
 
-// lazy components
+// LAZY CONTAINERS
 const Checkout = lazy(() => import('./containers/Checkout/Checkout'));
 const Orders = lazy(() => import('./containers/Orders/Orders'));
 const Auth = lazy(() => import('./containers/Auth/Auth'));
 
 const App = props => {
 
-  // STATE
+  // STATE OF AUTH
   const isAuth = useSelector(state => state.auth.token !== null)
-
-  // DISPATCH
+  // DISPATCH FUNCTION
   const dispatch = useDispatch();
+  // CHECK AUTH
   const onTryAutoSignUp = useCallback(() => dispatch(actions.authCheckState()), [dispatch])
 
   useEffect(() => { onTryAutoSignUp() }, [onTryAutoSignUp])
 
   // PRERENDER
-  let routes = (
-    <Switch>
-      <Route path='/auth'
-        render={() =>
-          <Auth {...props} />} />
-      <Route path='/' exact component={BurgerBuilder} />
-      <Redirect to='/' />
-    </Switch>
-  )
 
+  // CREATE ROUTES DEPENDED ON THE AUTH STATE
+  let routes;
   if (isAuth) {
     routes = (
       <Switch>
@@ -54,10 +59,21 @@ const App = props => {
         <Redirect to='/' />
       </Switch>
     )
+  } else {
+    routes = (
+      <Switch>
+        <Route path='/auth'
+          render={() =>
+            <Auth {...props} />} />
+        <Route path='/' exact component={BurgerBuilder} />
+        <Redirect to='/' />
+      </Switch>
+    )
   }
+
   return (
     <div>
-      <Layout>
+      <Layout isAuth={isAuth}>
         <Suspense
           fallback={<p>Loading...</p>}>
           {routes}

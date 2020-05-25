@@ -1,6 +1,9 @@
 import React from 'react'
 
+// STYLE
 import classes from './Toolbar.module.css'
+
+// COMPONENTS
 import Logo from './../../Logo/Logo'
 import NavigationItems from './../NavigationItems/NavigationItems'
 import DrawerToggle from './../SideDrawer/DrawerToggle/DrawerToggle'
@@ -10,9 +13,11 @@ export default function Toolbar(props) {
     return (
         <header className={classes.Toolbar}>
             <DrawerToggle clicked={props.drawerToggleClicked} />
-            <div className={classes.Logo}><Logo /></div>
+            <div className={classes.Logo}>
+                <Logo />
+            </div>
             <nav className={classes.DeskTopOnly}>
-                <NavigationItems isAuth = {props.isAuth}/>
+                <NavigationItems isAuth={props.isAuth} />
             </nav>
         </header>
     )

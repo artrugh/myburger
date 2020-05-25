@@ -18,7 +18,6 @@ export {
     fetchOrdersFailed
 } from './order'
 
-
 export {
     auth,
     logout,

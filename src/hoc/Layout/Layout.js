@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import {  useSelector } from 'react-redux';
-
 
 import classes from './Layout.module.css';
 
@@ -11,7 +9,6 @@ const Layout = props => {
 
     const [showSideDrawer, setSideDrawer] = useState(false)
 
-    const isAuth = useSelector(state => state.auth.token !== null)
     const sideDrawerCloseHandler = () => {
         setSideDrawer(false)
     }
@@ -21,10 +18,10 @@ const Layout = props => {
     return (
         <>
             <Toolbar
-                isAuth={isAuth}
+                isAuth={props.isAuth}
                 drawerToggleClicked={sideDrawerToggleHandler} />
             <SideDrawer
-                isAuth={isAuth}
+                isAuth={props.isAuth}
                 opened={showSideDrawer}
                 closed={sideDrawerCloseHandler} />
             <main className={classes.Content}>

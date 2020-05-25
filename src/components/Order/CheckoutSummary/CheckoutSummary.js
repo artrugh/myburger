@@ -1,6 +1,9 @@
 import React from 'react'
+
+// STYLE
 import classes from './CheckoutSummary.module.css'
 
+// COMPONENTS
 import Burger from './../../Burger/Burger'
 import Button from './../../UI/Button/Button'
 

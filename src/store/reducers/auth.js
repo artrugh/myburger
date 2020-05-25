@@ -16,7 +16,6 @@ export const initialState = {
     authRedirectPath: '/'
 }
 
-
 const reducer = (state = initialState, action) => {
     switch (action.type) {
 

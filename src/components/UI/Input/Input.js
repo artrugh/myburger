@@ -5,19 +5,20 @@ import classes from './Input.module.css'
 export default function Input(props) {
 
     let inputElement = null;
+    // SET THE STYLE CLASSES
     let inputClasses = [classes.InputElement]
 
     if (props.invalid && props.shouldValidate && props.touched) {
+        // IF THE INPUT IS INVALID, STYLE IT
         inputClasses.push(classes.Invalid)
     }
     switch (props.elementType) {
         case ('input'):
-
             inputElement = <input
                 className={inputClasses.join(' ')}
                 {...props.elementConfig}
                 value={props.value}
-                autoComplete = {props.elementConfig.autoComplete}
+                autoComplete={props.elementConfig.autoComplete}
                 onChange={props.changed} />;
             break;
         case ('textarea'):
@@ -51,10 +52,12 @@ export default function Input(props) {
 
     let validationError = null;
     if (props.invalid && props.touched) {
-        validationError = <p 
-        className={classes.ValidationError}>
-            Please enter a valid {props.id}!
-            </p>;
+        validationError = (
+            <p
+                className={classes.ValidationError}>
+                Please enter a valid {props.id}!
+            </p>
+        )
     }
 
     return (
@@ -63,6 +66,5 @@ export default function Input(props) {
             {inputElement}
             {validationError}
         </div>
-
     )
 }

@@ -1,23 +1,31 @@
 import React, { useState, useEffect, useCallback } from 'react'
+
+// REACT-REDUX
 import { useDispatch, useSelector } from 'react-redux'
+
+// ALL ACTIONS
+import * as actions from './../../store/actions/index';
+// AXIOS INSTANCE
+import axios from './../../axios-orders'
 
 // COMPONENTS
 import Burger from './../../components/Burger/Burger'
 import BuildControls from './../../components/Burger/BuildControls/BuildControls'
-import Modal from './../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
+// UI
+import Modal from './../../components/UI/Modal/Modal'
 import Spinner from './../../components/UI/Spinner/Spinner'
+// WRAPPER
 import withErrorHandler from './../../hoc/withErrorHandler/withErrorHandler'
 
-import * as actions from './../../store/actions/index';
-
-import axios from './../../axios-orders'
-
+// EXPORT THE BURGERBUILDER TO TEST IT
+// OTHERWISE THE WRAPPER UNABBLE THE TEST
 export const BurgerBuilder = props => {
 
+    // PURCHASING HOOK
     const [purchasing, setPurchasing] = useState(false);
 
-    // STATE
+    // REDUCERS
     const ingredients = useSelector(state => state.burgerBuilder.ingredients)
     const totalPrice = useSelector(state => state.burgerBuilder.totalPrice)
     const error = useSelector(state => state.burgerBuilder.error)
@@ -31,36 +39,49 @@ export const BurgerBuilder = props => {
     const onInitPurchase = () => dispatch(actions.purchaseInit())
     const onSetAuthRedirectPath = path => dispatch(actions.setAuthRedirectPath(path))
 
+    // INIT THE INGREDIENT AFTER THE FIRST RENDER
     useEffect(() => { onInitIngredients() }, [onInitIngredients])
 
     // HANDLER EVENTS
+
+    // PURCHASE
     const purchaseHandle = () => {
+        // IF THE USER HAS ALREADY SIGNUP
         if (isAuth) {
+            // THE ORDER IS AVAILABLE
             setPurchasing(true)
         } else {
+            //OTHERWISE STORE THE PATH AND PUSH TO THE NECESSARY AUTH
+            // THIS STORED PATH IS USED IN THE AUTH CONTAINER
             onSetAuthRedirectPath('/checkout')
             props.history.push('/auth')
         }
     }
-    const purchaseCancelHandle = () => setPurchasing(false)
 
+    // LEAVE THE PURCHASE AND HIDE THE MODEL = purchasing false
+    const purchaseCancelHandle = () => setPurchasing(false)
+    // CONTINUE
     const purchaseContinueHandle = () => {
+        // SET THE PURCHASE = FALSE (INITIAL STATE)
         onInitPurchase()
         props.history.push('/checkout')
     }
 
-    // PRERENDER
-    const disabledInfo = {
-        ...ingredients
+    // DISABLED BUTTONS
+    const getDisabledState = () => {
+        const disabledInfo = { ...ingredients }
+        // RETURN TRUE || FALSE BASED IN QUANTITY
+        for (let key in disabledInfo) {
+            disabledInfo[key] = disabledInfo[key] <= 0
+        }
+        return disabledInfo
     }
 
-    for (let key in disabledInfo) {
-        disabledInfo[key] = disabledInfo[key] <= 0
-    }
+    // PRERENDER
 
     let orderSummery = null
-    let burger = error ? <p>ingredients can't be loaded</p> : <Spinner />
-
+    let burger;
+    // IT THE INGREDIENTS HAVE ALREADY BEEN INITIATED
     if (ingredients) {
         burger = (
             <>
@@ -69,28 +90,29 @@ export const BurgerBuilder = props => {
                     price={totalPrice}
                     ingredientAdded={onIngredientAdded}
                     ingredientRemoved={onIngredientRemove}
-                    disabled={disabledInfo}
+                    disabled={getDisabledState()}
                     isAuth={isAuth}
                     ordered={purchaseHandle}
                 />
             </>
         )
+        orderSummery = (
+            <OrderSummary
+                price={totalPrice}
+                purchaseCancelled={purchaseCancelHandle}
+                purchaseContinued={purchaseContinueHandle}
+                ingredients={ingredients} />
+        )
 
-        orderSummery = <OrderSummary
-            price={totalPrice}
-            purchaseCancelled={purchaseCancelHandle}
-            purchaseContinued={purchaseContinueHandle}
-            ingredients={ingredients} />
+    } else {
+        burger = error ? <p>ingredients can't be loaded</p> : <Spinner />
     }
-
-    // if (props.isLoading) {
-    //     orderSummery = <Spinner />
-    // }
 
     return (
         <>
             <Modal
                 modalClosed={purchaseCancelHandle}
+                // IF PUCHASING SHOW OTHERWHISE NOT
                 show={purchasing}>
                 {orderSummery}
             </Modal>

@@ -7,14 +7,13 @@ const INGREDIENTS_PRICES = {
     bacon: 0.7
 }
 
-// BURGER BUILDER REDUCER
+// BURGER BUILDER
 
 export const addIng = (state, action) => {
     const addIng = {
         [action.ingredientName]:
             state.ingredients[action.ingredientName] + 1
     }
-
     const addIngs = updatedObj(state.ingredients, addIng)
     const addState = {
         ingredients: addIngs,
@@ -29,14 +28,12 @@ export const removeIng = (state, action) => {
         [action.ingredientName]:
             state.ingredients[action.ingredientName] - 1
     }
-
     const removeIngs = updatedObj(state.ingredients, removeIng)
     const removeState = {
         ingredients: removeIngs,
         totalPrice: state.totalPrice - INGREDIENTS_PRICES[action.ingredientName],
         building: true
     }
-
     return updatedObj(state, removeState)
 }
 
@@ -57,7 +54,7 @@ export const setIng = (state, action) => {
 export const fetchIngFailed = state => updatedObj(state, { error: true })
 
 
-// ORDER REDUCER
+// ORDER
 
 export const purchaseInit = state => updatedObj(state, { purchased: false })
 
@@ -81,7 +78,6 @@ export const fetchOrdersSuccess = (state, action) => updatedObj(state, {
     orders: action.orders,
     loading: false
 })
-
 
 // AUTH
 
